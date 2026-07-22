@@ -122,7 +122,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 #s-start .titelblock{padding-top:12px}
 #s-start h1{margin:10px 0 8px}
 .untertitel{font-family:'Lora',Georgia,serif;font-style:italic;font-size:17.5px;color:var(--gold);margin-bottom:4px}
-.knospen-buehne{display:flex;justify-content:center;margin:22px 0 10px}
+.knospen-buehne{display:flex;justify-content:center;margin:22px 0 6px}
+.mehrwert{
+  font-family:'Lora',Georgia,serif;font-style:italic;
+  font-size:16px;line-height:1.55;color:var(--gold);
+  min-height:52px;display:flex;align-items:center;justify-content:center;
+  padding:0 10px;margin-bottom:6px;
+  opacity:0;transition:opacity .7s ease;
+}
 .atmen{animation:atmen 7s ease-in-out infinite}
 @keyframes atmen{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
 
@@ -323,6 +330,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <h1>Willkommen zu deinem Frauen-Balance-Check</h1>
       <div class="untertitel">Ein sanfter Blick auf deine Hormon-Balance</div>
       <div class="knospen-buehne"><div class="atmen" id="start-knospe"></div></div>
+      <div class="mehrwert" id="mehrwert-zeile" aria-live="polite"></div>
     </div>
 
     <div id="start-erinnerung"></div>
@@ -354,7 +362,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="fuss-unter">BewusstSEINswerkstatt</div>
       <p class="klein">Limburg an der Lahn</p>
       <p class="klein" style="margin-top:6px">Impressum und Datenschutzhinweis findest du unten.</p>
-      <button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen</a>
+      <button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen bei ProvenExpert</a>
     </div>
   </section>
 
@@ -685,8 +693,34 @@ function offenheitAlle(){
 }
 
 /* ---------- Start ---------- */
+const MEHRWERT_ZEILEN = [
+  "In fünf Minuten ein ehrlicher, liebevoller Blick auf dich.",
+  "Ohne Termin, ohne Warteliste, ohne Druck.",
+  "Du siehst, wo gerade am meisten los ist. Und wo es dir schon gut geht.",
+  "Deine Antworten bleiben bei dir.",
+  "Du entscheidest, ob und wie es weitergeht."
+];
+let mehrwertTakt = null;
+function mehrwertStarten(){
+  const el = $("#mehrwert-zeile");
+  if (!el) return;
+  let i = 0;
+  el.textContent = MEHRWERT_ZEILEN[0];
+  el.style.opacity = 1;
+  if (reduzierteBewegung) return;
+  clearInterval(mehrwertTakt);
+  mehrwertTakt = setInterval(() => {
+    el.style.opacity = 0;
+    setTimeout(() => {
+      i = (i+1) % MEHRWERT_ZEILEN.length;
+      el.textContent = MEHRWERT_ZEILEN[i];
+      el.style.opacity = 1;
+    }, 720);
+  }, 5300);
+}
 function startAufbauen(){
   knospeBauen($("#start-knospe"), 172);
+  mehrwertStarten();
   const verlauf = verlaufLaden();
   const box = $("#start-erinnerung");
   box.innerHTML = "";
@@ -903,7 +937,7 @@ function ergebnisZeigen(erg){
   html += '<div class="fuss-unter">BewusstSEINswerkstatt</div>';
   html += '<p class="klein">Limburg an der Lahn</p>';
   html += '<p class="klein" style="margin-top:6px">Impressum und Datenschutzhinweis findest du unten.</p>';
-  html += '<button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen</a></div>';
+  html += '<button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen bei ProvenExpert</a></div>';
 
   el.innerHTML = html;
   zeige("#s-ergebnis");
