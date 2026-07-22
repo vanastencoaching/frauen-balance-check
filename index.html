@@ -44,7 +44,8 @@ body{
   min-height:100vh;min-height:100dvh;
   padding:calc(env(safe-area-inset-top, 0px)) 0 calc(env(safe-area-inset-bottom, 0px));
 }
-.deko{position:fixed;z-index:0;pointer-events:none;opacity:.5}
+body{position:relative}
+.deko{position:absolute;z-index:0;pointer-events:none;opacity:.5}
 #deko-oben{top:-4px;right:-14px}
 #deko-unten{bottom:-6px;left:-16px;transform:rotate(180deg)}
 #app{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:0 22px}
@@ -353,7 +354,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="fuss-unter">BewusstSEINswerkstatt</div>
       <p class="klein">Limburg an der Lahn</p>
       <p class="klein" style="margin-top:6px">Impressum und Datenschutzhinweis findest du unten.</p>
-      <button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button>
+      <button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen</a>
     </div>
   </section>
 
@@ -902,7 +903,7 @@ function ergebnisZeigen(erg){
   html += '<div class="fuss-unter">BewusstSEINswerkstatt</div>';
   html += '<p class="klein">Limburg an der Lahn</p>';
   html += '<p class="klein" style="margin-top:6px">Impressum und Datenschutzhinweis findest du unten.</p>';
-  html += '<button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button></div>';
+  html += '<button class="textlink" data-overlay="impressum">Impressum</button><span class="trenner" aria-hidden="true">&#183;</span><button class="textlink" data-overlay="datenschutz">Datenschutzhinweis</button><span class="trenner bewertungen-trenner" aria-hidden="true">&#183;</span><a class="textlink bewertungen-link" target="_blank" rel="noopener">Bewertungen</a></div>';
 
   el.innerHTML = html;
   zeige("#s-ergebnis");
@@ -1045,6 +1046,14 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") overlaySchli
 function overlayKnoepfeVerbinden(wurzel){
   wurzel.querySelectorAll("[data-overlay]").forEach(b => {
     b.addEventListener("click", () => overlayZeigen(b.getAttribute("data-overlay")));
+  });
+  wurzel.querySelectorAll(".bewertungen-link").forEach(a => {
+    if (LINK_PROVENEXPERT){ a.href = LINK_PROVENEXPERT; }
+    else {
+      a.style.display = "none";
+      const t = a.previousElementSibling;
+      if (t && t.classList.contains("bewertungen-trenner")) t.style.display = "none";
+    }
   });
 }
 overlayKnoepfeVerbinden(document);
