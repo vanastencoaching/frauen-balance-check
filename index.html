@@ -807,7 +807,7 @@ function frageAufbauen(schritt){
       const punkt = el.querySelector('.ranke-punkt[data-i="'+schritt.bereich+'"]');
       if (punkt) punkt.setAttribute("r", (4.6*offenheitBereich(schritt.bereich)).toFixed(2));
       clearTimeout(weiterTimer);
-      weiterTimer = setTimeout(() => { schrittIndex++; schrittZeigen(); }, 1000);
+      weiterTimer = setTimeout(() => { schrittIndex++; schrittZeigen(); }, 700);
     });
   });
 }
