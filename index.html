@@ -164,13 +164,18 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* ============ Fragen: die Bluete als Buehne ============ */
 .frage-kopf{position:relative;text-align:center;padding-top:6px}
+.zurueck-zeile{display:flex;justify-content:flex-start;min-height:34px;margin-bottom:2px}
 .zurueck{
-  position:absolute;left:-8px;top:2px;z-index:2;
-  width:44px;height:44px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold);font-size:26px;line-height:1;
+  display:inline-flex;align-items:center;gap:5px;
+  height:34px;padding:0 13px 0 9px;
+  border:1px solid rgba(166,129,63,.45);
+  border-radius:17px;
+  background:var(--papier);
+  color:var(--gold);
+  font-family:inherit;font-size:12.5px;letter-spacing:.03em;line-height:1;
 }
-.zurueck:active{background:rgba(166,129,63,.12)}
+.zurueck .z-pfeil{font-size:18px;line-height:1;margin-top:-2px}
+.zurueck:active{background:var(--blush);border-color:var(--gold)}
 .bereichszeile{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:500}
 .bereichstitel-klein{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:21px;color:var(--tanne);line-height:1.25;margin:1px 0 2px}
 .ranke{display:flex;justify-content:center;margin-top:4px}
@@ -406,8 +411,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
      oeffnet der Knopf ein Fenster mit den ProvenExpert-Bewertungen
      und E-Mail.
    ===================================================================== */
-const LINK_KLARHEITS_GESPRAECH = "";
-const LINK_VAN_ASTEN = "";
+const LINK_KLARHEITS_GESPRAECH = "https://outlook.office.com/bookwithme/user/14aaa56bf1a34b6ab53322444dc3a496@vanastencoaching.com/meetingtype/BY76Ht7NZkKxm3CmHnM4sQ2?anonymous&ismsaljsauthenabled&ep=mlink";
+const LINK_VAN_ASTEN = "https://www.vanastencoaching.com";
 const LINK_PROVENEXPERT = "https://www.provenexpert.com/de-de/vanastencoaching/";
 const KONTAKT_TELEFON = "0160 2496118";
 const KONTAKT_EMAIL = "kontakt@vanastencoaching.com";
@@ -773,8 +778,8 @@ function frageAufbauen(schritt){
   const el = $("#s-frage");
   const B = BEREICHE[schritt.bereich];
   let html = '';
+  html += '<div class="zurueck-zeile"><button class="zurueck" id="frage-zurueck" aria-label="Zur&#252;ck zur vorigen Frage"><span class="z-pfeil" aria-hidden="true">&#8249;</span>Zur&#252;ck</button></div>';
   html += '<div class="frage-kopf">';
-  html += '<button class="zurueck" id="frage-zurueck" aria-label="Zur&#252;ck">&#8249;</button>';
   html += '<div class="bereichszeile">Bereich '+(schritt.bereich+1)+' von 5</div>';
   html += '<div class="bereichstitel-klein">'+B.titel+'</div>';
   html += '<div class="ranke" id="ranke">'+rankeBauen(offenheitAlle())+'</div>';
@@ -802,7 +807,7 @@ function frageAufbauen(schritt){
       const punkt = el.querySelector('.ranke-punkt[data-i="'+schritt.bereich+'"]');
       if (punkt) punkt.setAttribute("r", (4.6*offenheitBereich(schritt.bereich)).toFixed(2));
       clearTimeout(weiterTimer);
-      weiterTimer = setTimeout(() => { schrittIndex++; schrittZeigen(); }, 480);
+      weiterTimer = setTimeout(() => { schrittIndex++; schrittZeigen(); }, 1000);
     });
   });
 }
